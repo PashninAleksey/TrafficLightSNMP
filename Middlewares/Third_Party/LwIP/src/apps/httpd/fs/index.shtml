@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head id="test"><title>Traffic lights</title>
+		<style ="font-weight: normal; font-family: Verdana;">	
+		</style>
+	</head>
+<body>
+	<h1> Traffic lights</h1><img src="IMG/favicon.ico" />
+
+	<form method="get" target="test" action="/IP.cgi">
+	IP address&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp     <input type="text" name=IPset id="IPset">
+	<input type=submit value=Send onclick="refresh();"></form><br>
+	<iframe name="test" style="display: none;"></iframe>
+	<form method="get" action="/CLR1.cgi">
+	Traffic lights 1
+	<input type="text" name=CLR1>
+	<input type=submit value=Send></form><br>
+	<form method="get" action="/CLR2.cgi">
+	Traffic lights 2
+	<input type="text" name=CLR2>
+	<input type=submit value=Send></form><br><br>
+
+	Current IPadress:&nbsp<strong id="ipVal"><!--#a--></strong><br>
+	Current MACadress:&nbsp<strong><!--#k--></strong><br>
+	Current NETMASKadress:&nbsp<strong><!--#n--></strong><br>
+	Current GATEWAYadress:&nbsp<strong><!--#s--></strong><br>
+	Current Temperature1&nbsp<strong><!--#b--></strong>&#8451;<br><br>
+	Current color:<br>
+<div>
+	<div class="info">
+		<div>
+			<img class="circle" id="ci" style="background-color: #FF0000;width: 15px;height: 15px;border: 1px solid rgba(0,0,0,1);border-radius: 20px;">
+			<span>Red1</span>
+			<span class="trash" id="c"><!--#c--></span>
+			<span></span>
+		</div>
+		<div>
+			<img class="circle" id="di" style="background-color: #008000;width: 15px;height: 15px;border: 1px solid #000;border-radius: 20px;">
+			<span>Green1</span>
+			<span class="trash" id="d"><!--#d--></span>
+			<span></span>
+		</div>
+		<div>
+			<img class="circle" id="ei" style="background-color: #00f;width: 15px;height: 15px;border: 1px solid #000;border-radius: 20px;">
+			<span>Blue1</span>
+			<span class="trash" id="e"><!--#e--></span>
+			<span></span>
+		</div>
+		<div>
+			<img class="circle" id="fi" style="background-color: #fff;width: 15px;height: 15px;border: 1px solid #000;border-radius: 20px;">
+			<span>White1</span>
+			<span class="trash" id="f"><!--#f--></span>
+			<span></span>
+		</div>
+	</div>
+
+	<div class="info" style="margin-left: 20px">
+		<div>
+			<img class="circle" id="gi" style="background-color: #FF0000;width: 15px;height: 15px;border: 1px solid #000;border-radius: 20px;">
+			<span>Red2</span>
+			<span class="trash" id="g"><!--#g--></span>
+			<span></span>
+		</div>
+		<div>
+			<img class="circle" id="hi" style="background-color: #008000;width: 15px;height: 15px;border: 1px solid #000;border-radius: 20px;">
+			<span>Green2</span>
+			<span class="trash" id="h"><!--#h--></span>
+			<span></span>
+		</div>
+		<div>
+			<img class="circle" id="ii" style="background-color: #00f;width: 15px;height: 15px;border: 1px solid #000;border-radius: 20px;">
+			<span>Blue2</span>
+			<span class="trash" id="i"><!--#i--></span>
+			<span></span>
+		</div>
+		<div>
+			<img class="circle" id="mi" style="background-color: #fff;width: 15px;height: 15px;border: 1px solid #000;border-radius: 20px;">
+			<span>White2</span>
+			<span class="trash" id="m"><!--#m--></span>
+			<span></span>
+		</div>
+	</div>
+
+</div>
+
+<style type="text/css">
+	.info {
+		float: left;
+		width: 10%;
+	}
+	.trash {
+		font-weight: bold;
+	}
+</style>
+
+<script>
+var chars = ['c','d','e','f','g','h','i','m'];
+chars.forEach(function(element){
+	var svalue = document.getElementById(element).innerHTML;
+	const regex = /\d+/;
+	if ((m = regex.exec(svalue)) !== null) {
+		document.getElementById(element + 'i').style.opacity = m[0] / 255;
+	} else {
+		document.getElementById(element + 'i').style.opacity = 0;
+	}
+});
+
+function refresh(){
+	var url = document.getElementById("IPset").value;
+	//window.replace("http://"+url);
+	
+	 var head = document.getElementById("test");
+	 var meta = document.createElement("meta");
+	 meta.setAttribute('http-equiv', 'refresh'); 
+	 meta.setAttribute('content', '1;URL=http://' + url);
+	 head.appendChild(meta);
+}
+</script>
+</body>
+</html>

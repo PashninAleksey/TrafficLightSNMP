@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head id="test"><title>NET</title>
+
+<style ="font-weight: normal; font-family: Verdana;"></style></head>
+<body>
+<h1> Set MAC,MASK,GATEWAY-address</h1><img src="IMG/favicon.ico" />
+<!--<meta http-equiv="refresh" content="5">-->
+<form method="get" target="test" action="/MAC.cgi">
+MAC-address:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp     <input type="text" name=MACset id="MACset">
+<input type=submit value=Send onclick="refresh();"></form><br>
+
+<!--<meta http-equiv="refresh" content="5">-->
+<form method="get" target="test" action="/MSK.cgi">
+NETMASK-address:&nbsp     <input type="text" name=MSKset id="MSKset">
+<input type=submit value=Send onclick="refresh();"></form><br>
+
+<!--<meta http-equiv="refresh" content="5">-->
+<form method="get" target="test" action="/GTW.cgi">
+GATEWAY-address:&nbsp&nbsp    <input type="text" name=GTWset id="GTWset">
+<input type=submit value=Send onclick="refresh();"></form><br>
+
+
+<iframe name="test" style="display: none;"></iframe>
+
+
+<script>
+
+
+function refresh(){
+	var url = window.location.hostname;
+	//window.replace("http://"+url);
+	
+	 var head = document.getElementById("test");
+	 var meta = document.createElement("meta");
+	 meta.setAttribute('http-equiv', 'refresh'); 
+	 meta.setAttribute('content', '1;URL=http://' + url);
+	 head.appendChild(meta);
+}
+</script>
+</body></html>
