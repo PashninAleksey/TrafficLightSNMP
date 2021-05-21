@@ -66,28 +66,6 @@ void Error_Handler(void);
 #define USER_FLASH_LAST_PAGE_ADDRESS  0x080E0000
 #define USER_FLASH_END_ADDRESS        0x080FFFFF
 
-#define  ip_SET_FLASH_1 		 0x08080000
-#define  ip_SET_FLASH_2 		 0x08080004
-#define  ip_SET_FLASH_3 		 0x08080008
-#define  ip_SET_FLASH_4 		 0x0808000C
-
-#define  mask_SET_FLASH_1 		 0x08080030
-#define  mask_SET_FLASH_2 		 0x08080034
-#define  mask_SET_FLASH_3 		 0x08080038
-#define  mask_SET_FLASH_4 		 0x0808003C
-
-#define  gtw_SET_FLASH_1 		 0x08080040
-#define  gtw_SET_FLASH_2 		 0x08080044
-#define  gtw_SET_FLASH_3 		 0x08080048
-#define  gtw_SET_FLASH_4 		 0x0808004C
-
-#define  MAC_SET_FLASH_1 		 0x08080010
-#define  MAC_SET_FLASH_2 		 0x08080014
-#define  MAC_SET_FLASH_3 		 0x08080018
-#define  MAC_SET_FLASH_4 		 0x0808001C
-#define  MAC_SET_FLASH_5 		 0x08080020
-#define  MAC_SET_FLASH_6 		 0x08080024
-
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

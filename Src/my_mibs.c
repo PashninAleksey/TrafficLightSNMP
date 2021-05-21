@@ -8,17 +8,20 @@
 #include "lwip/apps/snmp_table.h"
 #include "lwip/sys.h"
 
-extern char Red1_str[3];
-extern char Red2_str[3];
-extern char Green1_str[3];
-extern char Green2_str[3];
-extern char Blue1_str[3];
-extern char Blue2_str[3];
-extern char White1_str[3];
-extern char White2_str[3];
+extern void generate_zero(uint8_t *buf, uint8_t size, uint8_t len);
+
+extern uint8_t Red1_str[3];
+extern uint8_t Red2_str[3];
+extern uint8_t Green1_str[3];
+extern uint8_t Green2_str[3];
+extern uint8_t Blue1_str[3];
+extern uint8_t Blue2_str[3];
+extern uint8_t White1_str[3];
+extern uint8_t White2_str[3];
 extern float T_avg;
 extern uint8_t ColorRGBW[8];
 
+static s16_t get_reset(struct snmp_node_instance* instance, void* value);
 
 static s16_t get_color_value(struct snmp_node_instance* instance, void* value);
 static s16_t get_temperature_value(struct snmp_node_instance* instance,
@@ -95,11 +98,17 @@ static const struct snmp_scalar_node White2_node =
 SNMP_SCALAR_CREATE_NODE(9, SNMP_NODE_INSTANCE_READ_WRITE,
 		SNMP_ASN1_TYPE_INTEGER, get_White2, NULL, set_White2);
 
-static const struct snmp_node* const pashnin_nodes[] = {
-		&switches_color.node.node, &switches_temperature.node.node,
-		&Red1_node.node.node, &Green1_node.node.node, &Blue1_node.node.node,
-		&White1_node.node.node, &Red2_node.node.node, &Green2_node.node.node,
-		&Blue2_node.node.node, &White2_node.node.node };
+static const struct snmp_scalar_node switches_reset =
+SNMP_SCALAR_CREATE_NODE_READONLY(15, SNMP_ASN1_TYPE_INTEGER,
+		get_reset);
+
+static const struct snmp_node* const pashnin_nodes[] =
+		{ &switches_color.node.node, &switches_temperature.node.node,
+				&Red1_node.node.node, &Green1_node.node.node,
+				&Blue1_node.node.node, &White1_node.node.node,
+				&Red2_node.node.node, &Green2_node.node.node,
+				&Blue2_node.node.node, &White2_node.node.node,
+				&switches_reset.node.node };
 
 static const struct snmp_tree_node pashnin_tree_node =
 SNMP_CREATE_TREE_NODE(1, pashnin_nodes);
@@ -161,17 +170,7 @@ static snmp_err_t set_Red1(struct snmp_node_instance* instance, u16_t len,
 	u32_t val = *((u32_t*) value);
 	ColorRGBW[0] = (uint8_t) val;
 	itoa(ColorRGBW[0], Red1_str, 10);
-
-	if (strlen(Red1_str) == 1) {
-		Red1_str[2] = Red1_str[0];
-		Red1_str[1] = '0';
-		Red1_str[0] = '0';
-	}
-	if (strlen(Red1_str) == 2) {
-		Red1_str[2] = Red1_str[1];
-		Red1_str[1] = Red1_str[0];
-		Red1_str[0] = '0';
-	}
+	generate_zero(Red1_str, sizeof(Red1_str), strlen(Red1_str));
 	TIM1->CCR4 = ColorRGBW[0];
 	return SNMP_ERR_NOERROR;
 }
@@ -190,16 +189,7 @@ static snmp_err_t set_Green1(struct snmp_node_instance* instance, u16_t len,
 	ColorRGBW[1] = (uint8_t) val;
 	itoa(ColorRGBW[1], Green1_str, 10);
 
-	if (strlen(Green1_str) == 1) {
-		Green1_str[2] = Green1_str[0];
-		Green1_str[1] = '0';
-		Green1_str[0] = '0';
-	}
-	if (strlen(Green1_str) == 2) {
-		Green1_str[2] = Green1_str[1];
-		Green1_str[1] = Green1_str[0];
-		Green1_str[0] = '0';
-	}
+	generate_zero(Green1_str, sizeof(Green1_str), strlen(Green1_str));
 	TIM1->CCR3 = ColorRGBW[1];
 	return SNMP_ERR_NOERROR;
 }
@@ -217,16 +207,7 @@ static snmp_err_t set_Blue1(struct snmp_node_instance* instance, u16_t len,
 	ColorRGBW[2] = (uint8_t) val;
 	itoa(ColorRGBW[2], Blue1_str, 10);
 
-	if (strlen(Blue1_str) == 1) {
-		Blue1_str[2] = Blue1_str[0];
-		Blue1_str[1] = '0';
-		Blue1_str[0] = '0';
-	}
-	if (strlen(Blue1_str) == 2) {
-		Blue1_str[2] = Blue1_str[1];
-		Blue1_str[1] = Blue1_str[0];
-		Blue1_str[0] = '0';
-	}
+	generate_zero(Blue1_str, sizeof(Blue1_str), strlen(Blue1_str));
 	TIM1->CCR1 = ColorRGBW[2];
 	return SNMP_ERR_NOERROR;
 }
@@ -245,16 +226,7 @@ static snmp_err_t set_White1(struct snmp_node_instance* instance, u16_t len,
 	ColorRGBW[3] = (uint8_t) val;
 	itoa(ColorRGBW[3], White1_str, 10);
 
-	if (strlen(White1_str) == 1) {
-		White1_str[2] = White1_str[0];
-		White1_str[1] = '0';
-		White1_str[0] = '0';
-	}
-	if (strlen(White1_str) == 2) {
-		White1_str[2] = White1_str[1];
-		White1_str[1] = White1_str[0];
-		White1_str[0] = '0';
-	}
+	generate_zero(White1_str, sizeof(White1_str), strlen(White1_str));
 	TIM1->CCR2 = ColorRGBW[3];
 	return SNMP_ERR_NOERROR;
 }
@@ -273,16 +245,7 @@ static snmp_err_t set_Red2(struct snmp_node_instance* instance, u16_t len,
 	ColorRGBW[4] = (uint8_t) val;
 	itoa(ColorRGBW[4], Red2_str, 10);
 
-	if (strlen(Red2_str) == 1) {
-		Red2_str[2] = Red2_str[0];
-		Red2_str[1] = '0';
-		Red2_str[0] = '0';
-	}
-	if (strlen(Red2_str) == 2) {
-		Red2_str[2] = Red2_str[1];
-		Red2_str[1] = Red2_str[0];
-		Red2_str[0] = '0';
-	}
+	generate_zero(Red2_str, sizeof(Red2_str), strlen(Red2_str));
 	TIM4->CCR1 = ColorRGBW[4];
 	return SNMP_ERR_NOERROR;
 }
@@ -301,16 +264,7 @@ static snmp_err_t set_Green2(struct snmp_node_instance* instance, u16_t len,
 	ColorRGBW[5] = (uint8_t) val;
 	itoa(ColorRGBW[5], Green2_str, 10);
 
-	if (strlen(Green2_str) == 1) {
-		Green2_str[2] = Green2_str[0];
-		Green2_str[1] = '0';
-		Green2_str[0] = '0';
-	}
-	if (strlen(Green2_str) == 2) {
-		Green2_str[2] = Green2_str[1];
-		Green2_str[1] = Green2_str[0];
-		Green2_str[0] = '0';
-	}
+	generate_zero(Green2_str, sizeof(Green2_str), strlen(Green2_str));
 	TIM4->CCR2 = ColorRGBW[5];
 	return SNMP_ERR_NOERROR;
 }
@@ -328,16 +282,7 @@ static snmp_err_t set_Blue2(struct snmp_node_instance* instance, u16_t len,
 	ColorRGBW[6] = (uint8_t) val;
 	itoa(ColorRGBW[6], Blue2_str, 10);
 
-	if (strlen(Blue2_str) == 1) {
-		Blue2_str[2] = Blue2_str[0];
-		Blue2_str[1] = '0';
-		Blue2_str[0] = '0';
-	}
-	if (strlen(Blue2_str) == 2) {
-		Blue2_str[2] = Blue2_str[1];
-		Blue2_str[1] = Blue2_str[0];
-		Blue2_str[0] = '0';
-	}
+	generate_zero(Blue2_str, sizeof(Blue2_str), strlen(Blue2_str));
 	TIM4->CCR3 = ColorRGBW[6];
 	return SNMP_ERR_NOERROR;
 }
@@ -355,16 +300,17 @@ static snmp_err_t set_White2(struct snmp_node_instance* instance, u16_t len,
 	ColorRGBW[7] = (uint8_t) val;
 	itoa(ColorRGBW[7], White2_str, 10);
 
-	if (strlen(White2_str) == 1) {
-		White2_str[2] = White2_str[0];
-		White2_str[1] = '0';
-		White2_str[0] = '0';
-	}
-	if (strlen(White2_str) == 2) {
-		White2_str[2] = White2_str[1];
-		White2_str[1] = White2_str[0];
-		White2_str[0] = '0';
-	}
+	generate_zero(White2_str, sizeof(White2_str), strlen(White2_str));
 	TIM4->CCR4 = ColorRGBW[7];
 	return SNMP_ERR_NOERROR;
 }
+
+//reset
+static s16_t get_reset(struct snmp_node_instance* instance, void* value) {
+
+	NVIC_SystemReset();
+	int *int_ptr = (int*) value;
+
+	return sizeof(*int_ptr);
+}
+

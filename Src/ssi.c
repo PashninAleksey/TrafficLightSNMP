@@ -1,14 +1,14 @@
 #include "ssi.h"
 #include "cgi.h"
 
-extern char Red1_str[4];
-extern char Red2_str[4];
-extern char Green1_str[4];
-extern char Green2_str[4];
-extern char Blue1_str[4];
-extern char Blue2_str[4];
-extern char White1_str[4];
-extern char White2_str[4];
+extern uint8_t Red1_str[3];
+extern uint8_t Red2_str[3];
+extern uint8_t Green1_str[3];
+extern uint8_t Green2_str[3];
+extern uint8_t Blue1_str[3];
+extern uint8_t Blue2_str[3];
+extern uint8_t White1_str[3];
+extern uint8_t White2_str[3];
 
 extern uint8_t MACAddr[6];
 extern uint8_t IP_ADDRESS[4];
@@ -82,6 +82,7 @@ uint16_t SSI_Handler(int iIndex, char *pcInsert, int iInsertLen) {
 	}
 	if (iIndex == 9) {
 		/*tag to show White color of the second traffic light  */
+
 		memset(pcInsert, '\0', strlen(pcInsert));
 		strcat(pcInsert, White2_str);
 		return strlen(pcInsert);

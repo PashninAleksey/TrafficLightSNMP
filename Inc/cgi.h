@@ -5,14 +5,14 @@ char Message[100];
 
 uint8_t ColorRGBW[8];
 
-char Red1_str[4];
-char Red2_str[4];
-char Green1_str[4];
-char Green2_str[4];
-char Blue1_str[4];
-char Blue2_str[4];
-char White1_str[4];
-char White2_str[4];
+uint8_t Red1_str[3];
+uint8_t Red2_str[3];
+uint8_t Green1_str[3];
+uint8_t Green2_str[3];
+uint8_t Blue1_str[3];
+uint8_t Blue2_str[3];
+uint8_t White1_str[3];
+uint8_t White2_str[3];
 
 extern uint8_t MACAddr[6];
 extern uint8_t IP_ADDRESS[4];
